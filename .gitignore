@@ -1,0 +1,11 @@
+@"
+.venv/
+venv/
+node_modules/
+__pycache__/
+*.pyc
+.env
+.env.local
+dist/
+.vercel/
+"@ | Set-Content -Encoding ascii .gitignore
