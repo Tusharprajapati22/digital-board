@@ -1,7 +1,9 @@
+
+
 import { useEffect, useState } from 'react'
 import { api, supabase, BUCKET, fmtDate } from '../lib.js'
 
-const ADMIN_PASSWORD = 'college@123'
+export const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD
 const input = 'w-full border border-slate-300 rounded-lg px-3 py-2'
 
 export default function Admin() {
