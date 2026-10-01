@@ -1,6 +1,4 @@
-@"
-{
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-}
-"@ | Set-Content -Encoding ascii frontend\vercel.json
+   {
+     "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+   }
 
