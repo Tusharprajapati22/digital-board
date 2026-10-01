@@ -124,7 +124,7 @@ export default function PreviewModal({ notice, onClose }) {
   const [zoom, setZoom] = useState(100)
   const [failed, setFailed] = useState(false)
   const kind = fileKind(notice)
-  const canZoom = ['pdf', 'image', 'docx'].includes(kind) && !failed
+  const canZoom = ['pdf', 'image', 'docx', 'office'].includes(kind) && !failed
   const step = (d) => setZoom((z) => clamp(z + d))
   const fail = () => setFailed(true)
 
@@ -151,8 +151,13 @@ export default function PreviewModal({ notice, onClose }) {
   else if (kind === 'image') body = <ImageViewer {...v} />
   else if (kind === 'docx') body = <DocxViewer {...v} />
   else body = (
-    <iframe title={notice.title} className="w-full h-full border-0 bg-white"
-      src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(notice.file_url)}`} />
+    <div className="h-full overflow-auto bg-slate-200">
+      <div style={{ width: `${zoom}%`, height: `${zoom}%`, overflow: 'hidden' }}>
+        <iframe title={notice.title} className="border-0 bg-white"
+          style={{ width: `${10000 / zoom}%`, height: `${10000 / zoom}%`, transform: `scale(${zoom / 100})`, transformOrigin: '0 0' }}
+          src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(notice.file_url)}`} />
+      </div>
+    </div>
   )
 
   return (

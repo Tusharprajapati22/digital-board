@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     api('/api/digitalboard')
       .then(setNotices)
-      .catch(() => setError("Couldn't load notices. Check that the server is running."))
+      .catch(() => setError("Couldn't load documents. Check that the server is running."))
       .finally(() => setLoading(false))
   }, [])
 
@@ -28,9 +28,9 @@ export default function Home() {
     else setPwError(true)
   }
 
-  if (loading) return <p className="text-center text-slate-500 py-20">Loading notices…</p>
+  if (loading) return <p className="text-center text-slate-500 py-20">Loading documents…</p>
   if (error) return <p className="text-center text-red-600 py-20">{error}</p>
-  if (!notices.length) return <p className="text-center text-slate-500 py-20">No notices have been posted yet.</p>
+  if (!notices.length) return <p className="text-center text-slate-500 py-20">No documents have been posted yet.</p>
 
   return (
     <>
@@ -63,7 +63,7 @@ export default function Home() {
             {pwError && <p className="text-sm text-red-600">Incorrect password. Try again.</p>}
             <div className="flex justify-end gap-2">
               <button type="button" onClick={() => setLocked(null)} className="px-4 py-2 rounded-lg border border-slate-300">Cancel</button>
-              <button className="px-4 py-2 rounded-lg bg-blue-900 text-white font-semibold">Open notice</button>
+              <button className="px-4 py-2 rounded-lg bg-blue-900 text-white font-semibold">Open document</button>
             </div>
           </form>
         </div>

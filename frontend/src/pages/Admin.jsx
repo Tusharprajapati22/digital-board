@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api, supabase, BUCKET, fmtDate } from '../lib.js'
 
-export const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD
+const ADMIN_PASSWORD = 'college@123'
 const input = 'w-full border border-slate-300 rounded-lg px-3 py-2'
 
 export default function Admin() {
@@ -15,7 +15,7 @@ export default function Admin() {
   const [msg, setMsg] = useState('')
   const [editing, setEditing] = useState(null)
 
-  const load = () => api('/api/digitalboard').then(setNotices).catch(() => setMsg("Couldn't load notices."))
+  const load = () => api('/api/digitalboard').then(setNotices).catch(() => setMsg("Couldn't load documents."))
   useEffect(() => { if (authed) load() }, [authed])
 
   const login = (e) => {
@@ -39,7 +39,7 @@ export default function Admin() {
         body: JSON.stringify({ ...form, file_url: data.publicUrl, file_name: file.name, file_type: file.type }),
       })
       setForm({ subject: '', title: '', view_password: '' }); setFile(null)
-      formEl.reset(); setMsg('Notice published.'); load()
+      formEl.reset(); setMsg('Document published.'); load()
     } catch (err) { setMsg(`Upload failed: ${err.message}`) }
     setBusy(false)
   }
@@ -70,14 +70,14 @@ export default function Admin() {
   return (
     <div className="space-y-8">
       <form onSubmit={upload} className="bg-white border border-slate-200 rounded-xl p-5 grid gap-3 sm:grid-cols-2">
-        <h2 className="sm:col-span-2 text-xl font-bold">Upload notice</h2>
+        <h2 className="sm:col-span-2 text-xl font-bold">Upload document</h2>
         <input required className={input} placeholder="Subject name" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} />
         <input required className={input} placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
         <input className={input} placeholder="View password (optional)" value={form.view_password} onChange={(e) => setForm({ ...form, view_password: e.target.value })} />
-        <input required type="file" accept=".pdf,image/*" className={input} onChange={(e) => setFile(e.target.files[0])} />
+        <input required type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,image/*" className={input} onChange={(e) => setFile(e.target.files[0])} />
         <div className="sm:col-span-2 flex items-center gap-4">
           <button disabled={busy} className="rounded-lg bg-blue-900 text-white font-semibold px-5 py-2 disabled:opacity-50">
-            {busy ? 'Uploading…' : 'Publish notice'}
+            {busy ? 'Uploading…' : 'Publish document'}
           </button>
           {msg && <p className="text-sm text-slate-600">{msg}</p>}
         </div>
@@ -85,10 +85,10 @@ export default function Admin() {
 
       <section>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xl font-bold">All notices ({notices.length})</h2>
+          <h2 className="text-xl font-bold">All documents ({notices.length})</h2>
           <button onClick={() => { sessionStorage.removeItem('admin'); setAuthed(false) }} className="text-sm underline text-slate-600">Log out</button>
         </div>
-        {!notices.length && <p className="text-slate-500">No notices yet. Use the form above to publish one.</p>}
+        {!notices.length && <p className="text-slate-500">No documents yet. Use the form above to publish one.</p>}
         <ul className="space-y-2">
           {notices.map((n) => (
             <li key={n.id} className="bg-white border border-slate-200 rounded-lg p-3 flex items-center gap-3">
@@ -106,7 +106,7 @@ export default function Admin() {
       {editing && (
         <div className="fixed inset-0 z-40 bg-black/50 grid place-items-center p-4">
           <form onSubmit={saveEdit} className="bg-white rounded-xl p-6 w-full max-w-md space-y-3">
-            <h3 className="font-bold text-lg">Edit notice</h3>
+            <h3 className="font-bold text-lg">Edit document</h3>
             <input required className={input} value={editing.subject} onChange={(e) => setEditing({ ...editing, subject: e.target.value })} />
             <input required className={input} value={editing.title} onChange={(e) => setEditing({ ...editing, title: e.target.value })} />
             <input className={input} placeholder="View password (empty = none)" value={editing.view_password} onChange={(e) => setEditing({ ...editing, view_password: e.target.value })} />
