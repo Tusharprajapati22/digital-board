@@ -31,3 +31,14 @@ export async function downloadFile(n) {
     window.open(n.file_url, '_blank')
   }
 }
+
+export const fileKind = (n) => {
+  const ext = (n.file_name || n.file_url || '').split('?')[0].split('.').pop().toLowerCase()
+  if (ext === 'pdf') return 'pdf'
+  if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'svg'].includes(ext)) return 'image'
+  if (ext === 'docx') return 'docx'
+  if (['doc', 'ppt', 'pptx', 'xls', 'xlsx'].includes(ext)) return 'office'
+  if (n.file_type?.startsWith('image')) return 'image'
+  if (n.file_type?.includes('pdf')) return 'pdf'
+  return 'other'
+}
