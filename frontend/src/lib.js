@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+export const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD
 
 export const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 export const BUCKET = 'Digitalboard'
